@@ -15,11 +15,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized(); // 위젯 바인딩
   KakaoSdk.init(nativeAppKey: '2e3648104cc8e6f4710f9280358233fe'); // 카카오 초기화
   Xtyle.init(
-    configuration: XtyleConfig.korean(
-      fontFamilyKor: 'GmarketSans', // 한글 폰트
-      defaultFontFamily: 'Inter', // 영문 폰트
-    ),
-  );
+      configuration: XtyleConfig(mapper: {
+    XtyleRegExp.korean: 'GmarketSans', // 한글 폰트
+    XtyleRegExp.digit: 'GmarketSans', // 숫자 폰트
+  }, defaultFontFamily: 'Inter' // 그 외 폰트
+          ));
   runApp(const MyApp());
 }
 
