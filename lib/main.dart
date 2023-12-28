@@ -5,12 +5,21 @@ import 'package:get/route_manager.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:travel_go/Login/UserModel.dart';
 import 'package:travel_go/Login/kakao_login.dart';
-import 'package:travel_go/loginPage.dart';
-import 'package:travel_go/loginedPage.dart';
+import 'package:travel_go/Login/loginPage.dart';
+import 'package:travel_go/Login/loginedPage.dart';
+import 'package:travel_go/Login/new_user.dart';
+import 'package:travel_go/style.dart';
+import 'package:xtyle/xtyle.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // 위젯 바인딩
   KakaoSdk.init(nativeAppKey: '2e3648104cc8e6f4710f9280358233fe'); // 카카오 초기화
+  Xtyle.init(
+    configuration: XtyleConfig.korean(
+      fontFamilyKor: 'GmarketSans', // 한글 폰트
+      defaultFontFamily: 'Inter', // 영문 폰트
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -21,10 +30,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-      ),
+      ), // default 폰트
       home: const LoadingPage(),
     );
   }
@@ -38,16 +47,22 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  var login_model = UserModel(Kakao_Login()); // 카카오 로그인
-  String user_load = "안녕";
+  var loginModel = UserModel(Kakao_Login()); // 카카오 로그인
+  String userLoad = "";
 
   @override
   void initState() {
-    Timer(const Duration(milliseconds: 3000), () async {
+    Timer(const Duration(milliseconds: 1000), () {
+      setState(() {
+        userLoad = "초기 설정중..";
+      });
+    });
+    Timer(const Duration(milliseconds: 2000), () async {
       // 로딩화면을 보여주기 위한 딜레이 (Splash Screen)
-      await kakao_check(); // 카카오 로그인 토큰 검사
-      login_model.isLogined // 로그인 이력이 있을시
-          ? Get.off(() => const logined_Page()) // 메인페이지
+      await kakaoChech(); // 카카오 로그인 토큰 검사
+      loginModel.isLogined // 로그인 이력이 있을시
+          // ? Get.off(() => const logined_Page()) // 메인페이지
+          ? Get.off(() => const NewUser()) // 테스트를 위한 유저 생성 페이지 이동
           : Get.off(() => const login_Page()); // 로그인페이지
       /* Get.to : 새로운 화면으로 이동
          Get.off : 새로운 화면으로 이동할때, 이전 화면을 없앤다. */
@@ -55,11 +70,11 @@ class _LoadingPageState extends State<LoadingPage> {
     super.initState();
   }
 
-  Future kakao_check() async {
+  Future kakaoChech() async {
     if (await AuthApi.instance.hasToken()) {
       // SDK에 기존에 발급받은 토큰이 있는지 확인
-      user_load = "로그인 확인중...";
-      await login_model.checkToken(); // 토큰 유효성 검사
+      userLoad = "로그인 확인중...";
+      await loginModel.checkToken(); // 토큰 유효성 검사
       setState(() {});
     }
   }
@@ -67,15 +82,16 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text('Travel Go'),
-            Text(user_load), // 값이 변하기에 const를 사용하지 않음
+            Image.asset(
+              'assets/images/Logo.png',
+              scale: 3,
+            ),
+            XtyleText(userLoad, style: loadingText), // 값이 변하기에 const를 사용하지 않음
           ],
         ),
       ),

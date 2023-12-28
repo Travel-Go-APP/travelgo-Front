@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_go/Login/UserModel.dart';
 import 'package:travel_go/Login/kakao_login.dart';
-import 'package:travel_go/loginPage.dart';
+import 'package:travel_go/Login/loginPage.dart';
 
 class logined_Page extends StatefulWidget {
   const logined_Page({super.key});
