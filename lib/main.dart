@@ -44,7 +44,21 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         title: const Text('Travel_GO'),
         centerTitle: true,
-        leading: const IconButton(icon: Icon(Icons.rectangle), onPressed: null),
+        leading: Container(
+            alignment: Alignment.center,
+            color : Colors.blue, 
+            // width : 100,           
+            // height : 50,            
+            margin : const EdgeInsets.all(10),
+            child: InkWell(
+              child: Image.asset(
+                "images/Rank.png", 
+                fit: BoxFit.cover,
+                ),
+              onTap: () { },
+            ),
+          ), 
+        // const IconButton(icon: Icon(Icons.rectangle), onPressed: null),
         leadingWidth: 100,
         actions: const [
           IconButton(icon: Icon(Icons.circle, color: Color(0xFFFF0000),), onPressed: null),
@@ -65,53 +79,103 @@ class MapFrame extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          const Expanded(child: Column(
+          Expanded(child: Stack(
             children: [
-              Text("MAP",
-              textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-              ),)
-              ],
-          )
-          ),
-          Container(
-            alignment: Alignment.center,
-            color : Colors.blue, 
-            width : 100,           
-            height : 50,            
-            margin : const EdgeInsets.only(bottom: 50),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue,
+              //MAP
+              FractionallySizedBox(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 0.5,
+                      ),
+                      color : Colors.grey, 
+                    ),),
                 ),
-              child: const Text(
-                "Search",
-                textAlign: TextAlign.center,
+              const Center(
+                child: Text(
+                  "MAP",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 10,
+                    fontSize: 20,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                    ),
                   ),
+              ),
+              //검색
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  alignment: Alignment.center,
+                  width : 100,           
+                  height : 50,   
+                  margin : const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                    color : Colors.blue, 
+                    borderRadius: BorderRadius.circular(50)
                   ),
-              onPressed: () {  },
-            )
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: const Size(100, 50)
+                      ),
+                    child: const Text(
+                      "Search",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
+                      ),
+                    onPressed: () {  },
+                  )
+                ),
+              ),
+            ],
+          )
           ),
+          //레벨
           Container(
-            alignment: Alignment.center,
-            color : Colors.blue,   
             width: double.infinity,
             height : 25,
-            child: const Text(
-              "LV",
-              textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 10,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                ),),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 1,
+              ),
+              color : Colors.white, 
+            ),
+            child:   Stack(
+              children: [
+                FractionallySizedBox(
+                  widthFactor: 0.7, //레벨 퍼센트
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 0.5,
+                      ),
+                      color : Colors.blue, 
+                    ),),
+                ),
+                const Center(
+                  child: Text(
+                    "LV",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                )
+              ],
+            )
           )
         ],
       ),
