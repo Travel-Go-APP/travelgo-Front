@@ -58,7 +58,6 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
               onTap: () { },
             ),
           ), 
-        // const IconButton(icon: Icon(Icons.rectangle), onPressed: null),
         leadingWidth: 100,
         actions: const [
           IconButton(icon: Icon(Icons.circle, color: Color(0xFFFF0000),), onPressed: null),
