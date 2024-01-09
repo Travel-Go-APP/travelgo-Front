@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
+// import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+
+const String kakaoMapKey = '650299c65a76b3e51646e390bc975691';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load(fileName: 'assets/env/.env');
 
-  /// 라이브러리 메모리에 appKey 등록
-  /// 지도가 호출되기 전에만 세팅해 주면 됩니다.
-  /// dotEnv 대신 appKey 를 직접 넣어주셔도 됩니다.
-  AuthRepository.initialize(appKey: dotenv.env['APP_KEY'] ?? '');
+  // AuthRepository.initialize(appKey: dotenv.env['APP_KEY'] ?? '');
 
   runApp(const MyApp());
 }
@@ -55,12 +55,34 @@ class _MapState extends State<MapPage> {
       appBar: AppBar(
         title: const Text('Title'),
       ),
-      body: KakaoMap(
-        onMapTap: (latLng) {
-          // ignore: avoid_print
-          print(latLng);
-        },
+      body: KakaoMapView(
+        width: 400,
+        height: 400,
+        kakaoMapKey: kakaoMapKey,
+        lat: 33.450701,
+        lng: 126.570667,
+        showMapTypeControl: true,
+        showZoomControl: true,
+        markerImageURL: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+        onTapMarker: (message) {
+          //event callback when the marker is tapped
+        }
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: const Text('Title'),
+  //     ),
+  //     body: KakaoMap(
+  //       onMapTap: (latLng) {
+  //         // ignore: avoid_print
+  //         print(latLng);
+  //       },
+  //     ),
+  //   );
+  // }
 }
