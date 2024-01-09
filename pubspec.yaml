@@ -77,7 +77,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: GmarketSans # 호출될때 사용되는 이름
+    - family: GmarketSans # 한글 폰트 사용시
       fonts:
         - asset: assets/fonts/GmarketSansTTFLight.ttf # 기본 값
         - asset: assets/fonts/GmarketSansTTFMedium.ttf # FontWeight.w300 선언시 사용됨
@@ -85,9 +85,9 @@ flutter:
         - asset: assets/fonts/GmarketSansTTFBold.ttf # FontWeight.bold 선언시 사용됨
           weight: 700
 
-    - family: Inter
+    - family: Inter # 영문 폰트 사용시
       fonts:
-        - asset: assets/fonts/InterTight-Italic-VariableFont_wght.ttf
+        - asset: assets/fonts/InterTight-Italic-VariableFont_wght.ttf # 기본 값
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
