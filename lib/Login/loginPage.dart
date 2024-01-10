@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:travel_go/Login/UserModel.dart';
 import 'package:travel_go/Login/kakao_login.dart';
 import 'package:travel_go/Login/loginedPage.dart';
@@ -30,6 +31,7 @@ class _login_PageState extends State<login_Page> {
             ElevatedButton(
                 style: kakaoButton,
                 onPressed: () async {
+                  print("키 값은 ${await KakaoSdk.origin}");
                   await login_model.login();
                   setState(() {
                     if (login_model.isLogined) {

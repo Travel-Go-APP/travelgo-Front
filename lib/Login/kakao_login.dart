@@ -55,6 +55,11 @@ class Kakao_Login implements social_login {
           await UserApi.instance.accessTokenInfo(); // 토큰 검사
       print(
           '토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn} ${tokenInfo.appId}');
+      if (tokenInfo.expiresIn >= 60) {
+        print("남은 시간 : ${(tokenInfo.expiresIn / 60).ceil()}분");
+      } else {
+        print("남은 시간 : ${tokenInfo.expiresIn}초");
+      }
       return true;
     } catch (error) {
       if (error is KakaoException && error.isInvalidTokenError()) {

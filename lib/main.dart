@@ -73,6 +73,14 @@ class _LoadingPageState extends State<LoadingPage> {
       userLoad = "로그인 확인중...";
       await loginModel.checkToken(); // 토큰 유효성 검사
       setState(() {});
+    } else {
+      print('발급된 토큰 없음');
+      try {
+        await UserApi.instance.loginWithKakaoAccount();
+        print("발급된 토큰이 없어서 재로그인 후 성공");
+      } catch (e) {
+        print("재로그인을 시도했지만 실패했습니다.");
+      }
     }
   }
 
