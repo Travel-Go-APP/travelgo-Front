@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/route_manager.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:travel_go/Login/UserModel.dart';
@@ -11,9 +12,11 @@ import 'package:travel_go/Login/new_user.dart';
 import 'package:travel_go/style.dart';
 import 'package:xtyle/xtyle.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // 위젯 바인딩
-  KakaoSdk.init(nativeAppKey: '2e3648104cc8e6f4710f9280358233fe'); // 카카오 초기화
+  await dotenv.load(fileName: 'assets/env/.env');
+  var appKey = dotenv.env['NATIVE_API_KEY'];
+  KakaoSdk.init(nativeAppKey: appKey); // 카카오 초기화
   Xtyle.init(
       configuration: XtyleConfig(mapper: {
     XtyleRegExp.korean: 'GmarketSans', // 한글 폰트

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:travel_go/Login/loginedPage.dart';
 import 'package:travel_go/style.dart';
 import 'package:xtyle/xtyle.dart';
+import 'nick_check.dart';
 
 class NewUser extends StatefulWidget {
   const NewUser({super.key});
@@ -128,6 +129,7 @@ class _NewUserState extends State<NewUser> {
   }
 
   Future<void> checkValidator(String name) {
+    checkNick(name);
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
