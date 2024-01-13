@@ -11,15 +11,17 @@ Future<void> checkNick(String nickName) async {
     // var headers = {"accecpt": '*/*',};
     var headers = {"accecpt": '*/*', 'Content-Type': 'application/json'};
     var bodys = jsonEncode({
-      "kakaoId": "qsiczxnmcn",
-      "email": "qsiczxnmcn",
+      "kakaoId": "gfdhsfgaszxcvczx",
+      "email": "asdfdsgvxvzxcv",
       "nickname": nickName});
 
     // final url = Uri.parse('$urlPath/user/check-nickname?nickname=$nickName');
-    final url = Uri.parse('$urlPath/user/kakao-login');
-
-    http.Response response = await http.post( url, headers: headers, body: bodys);
+    // final url = Uri.parse('$urlPath/user/kakao_check?kakaoId=$nickName');
+    final url = Uri.parse('$urlPath/user/signup');
+    // http.Response response = await http.post( url, headers: headers);
+    // http.Response response = await http.post( url, headers: headers, body: bodys);
       // body: queryJson;
-    print("body is $bodys");
-    print("response is ${response.body}");
+    // print("body is $bodys");
+    http.Response response = await http.post( url, headers: headers, body: bodys);
+    print("response is ${response.statusCode}");
   }
