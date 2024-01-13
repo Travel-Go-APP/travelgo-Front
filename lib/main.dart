@@ -61,6 +61,8 @@ class _LoadingPageState extends State<LoadingPage> {
       // 로딩화면을 보여주기 위한 딜레이 (Splash Screen)
       await kakaoChech(); // 카카오 로그인 토큰 검사
       loginModel.isLogined // 로그인 이력이 있을시
+          // check_kakao 있을 때 > Home
+          // check_kakao 없을 때 > NewUser
           // ? Get.off(() => const logined_Page()) // 메인페이지
           ? Get.off(() => const NewUser()) // 테스트를 위한 유저 생성 페이지 이동
           : Get.off(() => const login_Page()); // 로그인페이지

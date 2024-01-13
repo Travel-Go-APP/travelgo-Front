@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -23,5 +22,4 @@ Future<void> checkNick(String nickName) async {
       // body: queryJson;
     // print("body is $bodys");
     http.Response response = await http.post( url, headers: headers, body: bodys);
-    print("response is ${response.statusCode}");
   }

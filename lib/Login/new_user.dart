@@ -109,7 +109,8 @@ class _NewUserState extends State<NewUser> {
                     onPressed:
                         fillForm && validatorNickname // 필드가 채워져있고, 1차 유효성을 통과
                             ? () {
-                                setState(() {
+                                setState  (() async {
+                                  await checkNick(nicknameController.text);
                                   checkValidator(nicknameController.text);
                                   // Get.off(() => const logined_Page());
                                 });
@@ -128,8 +129,8 @@ class _NewUserState extends State<NewUser> {
     );
   }
 
-  Future<void> checkValidator(String name) {
-    checkNick(name);
+  Future<void> checkValidator (String name) {
+    //boolean 함수 넣고 다이얼로그 조절
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
