@@ -10,174 +10,59 @@ class TravelGoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Travel_GO",
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MainPage(),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MainPage extends StatelessWidget {
-  const MainPage({super.key});
-	@override
-    Widget build(BuildContext context) {
-    	return const Scaffold(
-        	appBar: InfoBar(),	// AppBar
-          body: MapFrame(),
-      );	// Scaffold
-    }
+class MyHomePage extends StatefulWidget {  
+  const MyHomePage({Key? key, required this.title}) : super(key: key);   
+  
+  final String title; 
+    
+  @override  
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class InfoBar extends StatelessWidget implements PreferredSizeWidget {
-  const InfoBar({super.key});
-
-  @override
-  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.blue,
-        elevation: 0,
-        title: const Text('Travel_GO'),
-        centerTitle: true,
-        leading: Container(
-            alignment: Alignment.center,
-            color : Colors.blue, 
-            // width : 100,           
-            // height : 50,            
-            margin : const EdgeInsets.all(10),
-            child: InkWell(
-              child: Image.asset(
-                "images/Rank.png", 
-                fit: BoxFit.cover,
-                ),
-              onTap: () { },
-            ),
-          ), 
-        leadingWidth: 100,
-        actions: const [
-          IconButton(icon: Icon(Icons.circle, color: Color(0xFFFF0000),), onPressed: null),
-          IconButton(icon: Icon(Icons.circle, color: Color(0xFF05FF00),), onPressed: null),
-          IconButton(icon: Icon(Icons.circle, color: Color(0xFFF9FF00),), onPressed: null),
-        ],
-      ),
-    );
+class _MyHomePageState extends State<MyHomePage> {  
+  int _counter = 0; 
+  void _incrementCounter() {    
+    setState(() {  
+       _counter++;   
+       });  
+       
+    }  
+  @override  
+  Widget build(BuildContext context) {    
+    return Scaffold( 
+      appBar: AppBar( 
+        title: Text(widget.title),      
+      ),     
+      body: Center( 
+        child: Column(         
+          mainAxisAlignment: MainAxisAlignment.center,          
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),            
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headlineMedium,            
+            ),          
+          ],       
+        ),      
+      ),      
+      floatingActionButton: FloatingActionButton(        
+        onPressed: _incrementCounter, 
+        tooltip: 'Increment',        
+        child: const Icon(Icons.add),
+      ), 
+    );  
   }
-
 }
 
-class MapFrame extends StatelessWidget {
-  const MapFrame({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Expanded(child: Stack(
-            children: [
-              //MAP
-              FractionallySizedBox(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 0.5,
-                      ),
-                      color : Colors.grey, 
-                    ),),
-                ),
-              const Center(
-                child: Text(
-                  "MAP",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                    ),
-                  ),
-              ),
-              //검색
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  alignment: Alignment.center,
-                  width : 100,           
-                  height : 50,   
-                  margin : const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 1,
-                    ),
-                    color : Colors.blue, 
-                    borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      minimumSize: const Size(100, 50)
-                      ),
-                    child: const Text(
-                      "Search",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                        ),
-                      ),
-                    onPressed: () {  },
-                  )
-                ),
-              ),
-            ],
-          )
-          ),
-          //레벨
-          Container(
-            width: double.infinity,
-            height : 25,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
-              color : Colors.white, 
-            ),
-            child:   Stack(
-              children: [
-                FractionallySizedBox(
-                  widthFactor: 0.7, //레벨 퍼센트
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 0.5,
-                      ),
-                      color : Colors.blue, 
-                    ),),
-                ),
-                const Center(
-                  child: Text(
-                    "LV",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                )
-              ],
-            )
-          )
-        ],
-      ),
-    );
-}
-}
