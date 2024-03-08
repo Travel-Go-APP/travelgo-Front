@@ -50,6 +50,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   yaml: ^3.1.2
   package_info_plus: ^5.0.1
+  countries_world_map: ^1.1.1
+  animated_flip_counter: ^0.2.6
 
 dev_dependencies:
   flutter_test:

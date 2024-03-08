@@ -45,17 +45,14 @@ class LatLngController extends GetxController {
 
   // 위치 추적 모드
   Future<void> getMap() async {
-    NLocationOverlay locationOverlay =
-        await mapController.getLocationOverlay(); // 현위치 오버레이
+    NLocationOverlay locationOverlay = await mapController.getLocationOverlay(); // 현위치 오버레이
     // locationOverlay.setIcon(const NOverlayImage.fromAssetImage('assets/images/user.png'));
     locationOverlay.setIconSize(const Size.fromRadius(60)); // 아이콘 사이즈
     locationOverlay.setCircleOutlineColor(Colors.black); // 테두리 색상
     locationOverlay.setCircleOutlineWidth(2); // 테두리 굵기
-    locationOverlay
-        .setCircleColor(const Color.fromARGB(119, 114, 255, 111)); // 원 색상
+    locationOverlay.setCircleColor(const Color.fromARGB(119, 114, 255, 111)); // 원 색상
     locationOverlay.setCircleRadius(60); // 원 크기
-    await mapController
-        .setLocationTrackingMode(NLocationTrackingMode.follow); // 위치 추적 모드
+    await mapController.setLocationTrackingMode(NLocationTrackingMode.follow); // 위치 추적 모드
     await getLocation(); // 현재 위치 가져오기 (위경도)
     print("위치 추적 모드 : follow");
     print("위도 : ${mylatitude}, 경도 : ${mylongitude}");
