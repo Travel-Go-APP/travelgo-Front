@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:countries_world_map/countries_world_map.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -20,17 +19,17 @@ class _attractionPageState extends State<attractionPage> {
   final attractInfos = Get.put(attractInfo());
   late ScrollController? _scrollController;
   bool lastStatus = true;
-  double height = 200;
-  double percent = 0.83; // 현재 진행률
+  double percent = 0.0; // 현재 진행률
 
   final List<String> country = <String>['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주'];
-  
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(milliseconds: 100), () async {
+    Timer(const Duration(milliseconds: 500), () async {
       setState(() {
         attractInfos.updateValue(); // 명소 진행률 가져오기
+        percent = 0.83;
       });
     });
     _scrollController = ScrollController()
@@ -44,7 +43,7 @@ class _attractionPageState extends State<attractionPage> {
   }
 
   bool get _isShrink {
-    return _scrollController != null && _scrollController!.hasClients && _scrollController!.offset > (height - kToolbarHeight);
+    return _scrollController != null && _scrollController!.hasClients && _scrollController!.offset > (MediaQuery.of(context).padding.top * 19);
   }
 
   @override
@@ -65,6 +64,8 @@ class _attractionPageState extends State<attractionPage> {
   // 상단
   SliverAppBar appbar() {
     return SliverAppBar(
+      backgroundColor: _isShrink ? Colors.green : Colors.white,
+      shadowColor: Colors.black, // 상단 스크롤 했을때 그림자
       floating: false, // 스크롤을 했을시 bottom만 보이게 하고 싶을때
       pinned: true, // 스크롤을 했을시, 상단이 고정되게 하고 싶을때
       leading: IconButton(
@@ -104,11 +105,12 @@ class _attractionPageState extends State<attractionPage> {
                       LinearPercentIndicator(
                         width: MediaQuery.of(context).size.width * 0.7,
                         percent: percent,
-                        progressColor: Colors.green,
+                        progressColor: Colors.green[800],
+                        backgroundColor: Colors.white,
                       ),
                       XtyleText(
                         "${attractInfos.percentValue}%",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[800]),
                       ),
                     ],
                   )))
@@ -138,15 +140,15 @@ class _attractionPageState extends State<attractionPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        XtyleText("전체 진행률", style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.06)),
+        XtyleText("전체 진행률", style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.055, fontWeight: FontWeight.bold)),
         AnimatedFlipCounter(
-          curve: Curves.decelerate,
+          curve: Curves.easeInOutQuad,
           wholeDigits: 2,
           value: attractInfos.percentValue,
           prefix: " : ",
           suffix: "%",
-          duration: const Duration(milliseconds: 1400), // 퍼센트와 시간을 맞추기 위해 -100
-          textStyle: TextStyle(color: Colors.blue, fontFamily: 'GmarketSans', fontSize: MediaQuery.of(context).size.width * 0.06),
+          duration: const Duration(milliseconds: 2500), // 퍼센트와 시간을 맞추기 위해 -100
+          textStyle: TextStyle(color: Colors.blue, fontFamily: 'GmarketSans', fontSize: MediaQuery.of(context).size.width * 0.055, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -155,8 +157,9 @@ class _attractionPageState extends State<attractionPage> {
   // 현재 진행률 (퍼센트)
   Widget percentBar() {
     return LinearPercentIndicator(
+      curve: Curves.easeInOutQuad,
       animation: true,
-      animationDuration: 1500,
+      animationDuration: 2500,
       padding: const EdgeInsets.only(left: 30, right: 30),
       lineHeight: MediaQuery.of(context).size.height * 0.015,
       percent: percent,
