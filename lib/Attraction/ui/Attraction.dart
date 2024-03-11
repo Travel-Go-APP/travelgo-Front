@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:countries_world_map/countries_world_map.dart';
 import 'package:flutter/material.dart';
@@ -43,28 +44,25 @@ class _attractionPageState extends State<attractionPage> {
   }
 
   bool get _isShrink {
-    return _scrollController != null && _scrollController!.hasClients && _scrollController!.offset > (MediaQuery.of(context).padding.top * 19);
+    return _scrollController != null && _scrollController!.hasClients && _scrollController!.offset > (MediaQuery.of(context).size.height * 0.55 - kToolbarHeight);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            appbar(), // 상단
-          ];
-        },
-        body: countryList(),
-      ),
-    );
+        body: CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        appbar(),
+        countryList(),
+      ],
+    ));
   }
 
   // 상단
   SliverAppBar appbar() {
     return SliverAppBar(
-      backgroundColor: _isShrink ? Colors.green : Colors.white,
+      backgroundColor: _isShrink ? Colors.green : const Color.fromARGB(255, 163, 220, 253),
       shadowColor: Colors.black, // 상단 스크롤 했을때 그림자
       floating: false, // 스크롤을 했을시 bottom만 보이게 하고 싶을때
       pinned: true, // 스크롤을 했을시, 상단이 고정되게 하고 싶을때
@@ -78,24 +76,35 @@ class _attractionPageState extends State<attractionPage> {
           });
         },
       ),
-      title: const XtyleText("명소", style: TextStyle(fontWeight: FontWeight.bold)),
-      centerTitle: !_isShrink,
-      expandedHeight: MediaQuery.of(context).size.height * 0.7,
+      title: const XtyleText("명소", style: TextStyle(fontSize: 25)),
+      expandedHeight: MediaQuery.of(context).size.height * 0.6,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
-        background: Container(
-            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top * 3.5),
-            child: Column(
-              children: [
-                koreanMaps(), // 대한민국 지도
-                percentText(), // 현재 진행률 (텍스트)
-                percentBar(), // 현재 진행률 (퍼센트)
-              ],
-            )),
+        background: Stack(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              color: const Color.fromARGB(255, 163, 220, 253),
+              margin: Platform.isAndroid ? EdgeInsets.only(top: MediaQuery.of(context).padding.top * 2.5) : EdgeInsets.only(top: MediaQuery.of(context).padding.top * 1),
+              child: koreanMaps(), // 대한민국 지도
+            ),
+            Positioned(
+                right: MediaQuery.of(context).size.width * 0.03,
+                bottom: MediaQuery.of(context).size.height * 0.015,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    percentText(),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.005),
+                    percentBar(),
+                  ],
+                )),
+          ],
+        ),
       ),
       bottom: _isShrink
           ? PreferredSize(
-              preferredSize: Size.fromHeight(MediaQuery.of(context).padding.top * 1),
+              preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.04),
               child: Container(
                   margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
                   child: Row(
@@ -125,9 +134,8 @@ class _attractionPageState extends State<attractionPage> {
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
       child: SimpleMap(
         instructions: SMapSouthKorea.instructions,
-        countryBorder: const CountryBorder(color: Colors.grey), // 도시 경계선
-        defaultColor: Colors.white, // 기본 색상
-        colors: mapColor.toMap(),
+        countryBorder: const CountryBorder(color: Color.fromARGB(130, 255, 255, 255)), // 도시 경계선
+        defaultColor: Colors.green[500], // 기본 색상
         callback: (id, name, tapDetails) {
           print("$name : $id"); // 이동 가능 할듯?
         },
@@ -138,9 +146,9 @@ class _attractionPageState extends State<attractionPage> {
   // 현재 진행률 (텍스트)
   Widget percentText() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        XtyleText("전체 진행률", style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.055, fontWeight: FontWeight.bold)),
+        XtyleText("전체 진행률", style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05, fontWeight: FontWeight.bold)),
         AnimatedFlipCounter(
           curve: Curves.easeInOutQuad,
           wholeDigits: 2,
@@ -148,7 +156,7 @@ class _attractionPageState extends State<attractionPage> {
           prefix: " : ",
           suffix: "%",
           duration: const Duration(milliseconds: 2500), // 퍼센트와 시간을 맞추기 위해 -100
-          textStyle: TextStyle(color: Colors.blue, fontFamily: 'GmarketSans', fontSize: MediaQuery.of(context).size.width * 0.055, fontWeight: FontWeight.bold),
+          textStyle: TextStyle(color: Colors.blue, fontFamily: 'GmarketSans', fontSize: MediaQuery.of(context).size.width * 0.05, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -157,69 +165,70 @@ class _attractionPageState extends State<attractionPage> {
   // 현재 진행률 (퍼센트)
   Widget percentBar() {
     return LinearPercentIndicator(
+      padding: const EdgeInsets.all(0),
       curve: Curves.easeInOutQuad,
       animation: true,
       animationDuration: 2500,
-      padding: const EdgeInsets.only(left: 30, right: 30),
+      width: MediaQuery.of(context).size.width * 0.55,
       lineHeight: MediaQuery.of(context).size.height * 0.015,
       percent: percent,
       progressColor: Colors.green,
       barRadius: Radius.circular(MediaQuery.of(context).size.width * 0.05),
+      backgroundColor: Colors.white,
     );
   }
 
   // 지역 리스트
-  ListView countryList() {
-    return ListView.builder(
-      itemCount: country.length,
-      itemBuilder: (context, index) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.08,
-          margin: EdgeInsets.all(MediaQuery.of(context).size.height * 0.005),
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(elevation: 0, side: const BorderSide(color: Colors.white)),
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.green,
-                            maxRadius: MediaQuery.of(context).size.height * 0.022,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            maxRadius: MediaQuery.of(context).size.height * 0.02,
-                            child: const Icon(Icons.check, color: Colors.green),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                      XtyleText(country[index], style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.055, color: Colors.black)),
-                    ],
-                  ),
-                  RichText(
-                    text: TextSpan(children: [
-                      WidgetSpan(
-                          child: XtyleText(
-                        "100%",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.045, fontFamily: 'GmarketSans', color: Colors.blue),
-                      )),
-                      WidgetSpan(
-                          child: XtyleText(
-                        "(10/10)",
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.03, fontFamily: 'GmarketSans', color: Colors.grey),
-                      )),
-                    ]),
-                  ),
-                ],
-              )),
-        );
-      },
-    );
+  SliverList countryList() {
+    return SliverList.builder(
+        itemCount: country.length,
+        itemBuilder: (context, index) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.08,
+            margin: EdgeInsets.all(MediaQuery.of(context).size.height * 0.005),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, elevation: 0, side: const BorderSide(color: Colors.white)),
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.green,
+                              maxRadius: MediaQuery.of(context).size.height * 0.022,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              maxRadius: MediaQuery.of(context).size.height * 0.02,
+                              child: const Icon(Icons.check, color: Colors.green),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+                        XtyleText(country[index], style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.055, color: Colors.black, fontWeight: FontWeight.w300)),
+                      ],
+                    ),
+                    RichText(
+                      text: TextSpan(children: [
+                        WidgetSpan(
+                            child: XtyleText(
+                          "100% ",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.045, fontFamily: 'GmarketSans', color: Colors.blue),
+                        )),
+                        WidgetSpan(
+                            child: XtyleText(
+                          "(10/10)",
+                          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.03, fontFamily: 'GmarketSans', color: Colors.grey),
+                        )),
+                      ]),
+                    ),
+                  ],
+                )),
+          );
+        });
   }
 }
