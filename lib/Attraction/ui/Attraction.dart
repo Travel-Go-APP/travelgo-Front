@@ -66,7 +66,7 @@ class _attractionPageState extends State<attractionPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.05,
                   decoration: BoxDecoration(
@@ -77,6 +77,7 @@ class _attractionPageState extends State<attractionPage> {
                     ),
                   ),
                   child: Container(
+                    margin: EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01)),
                     width: MediaQuery.of(context).size.width * 0.4,
                     height: MediaQuery.of(context).size.height * 0.01,
@@ -98,6 +99,7 @@ class _attractionPageState extends State<attractionPage> {
       shadowColor: Colors.black, // 상단 스크롤 했을때 그림자
       floating: false, // 스크롤을 했을시 bottom만 보이게 하고 싶을때
       pinned: true, // 스크롤을 했을시, 상단이 고정되게 하고 싶을때
+      stretch: true, // 오버 스크롤시 영역을 채우는가?
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_outlined),
         color: Colors.black,
@@ -110,7 +112,7 @@ class _attractionPageState extends State<attractionPage> {
       ),
       title: XtyleText("명소", style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.055)),
       centerTitle: true,
-      expandedHeight: MediaQuery.of(context).size.height * 0.9,
+      expandedHeight: MediaQuery.of(context).size.height * 0.8,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         background: Container(
@@ -161,7 +163,7 @@ class _attractionPageState extends State<attractionPage> {
     return Stack(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.6,
           margin: EdgeInsets.only(right: MediaQuery.of(context).size.height * 0.03),
           child: SimpleMap(
             instructions: SMapSouthKorea.instructions,
