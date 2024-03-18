@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:travel_go/Home/ui/home.dart';
 import 'package:travel_go/style.dart';
 import 'package:xtyle/xtyle.dart';
+import 'package:travel_go/Login/repository/loginRepo.dart';
 
 class NewUser extends StatefulWidget {
   const NewUser({super.key});
@@ -13,6 +14,7 @@ class NewUser extends StatefulWidget {
 
 class _NewUserState extends State<NewUser> {
   TextEditingController nicknameController = TextEditingController();
+  late final loginRepo loginrepo;
   bool fillForm = false;
   bool validatorNickname = true;
   String? nickname = '';
@@ -96,7 +98,8 @@ class _NewUserState extends State<NewUser> {
                 ElevatedButton(
                     onPressed: fillForm && validatorNickname // 필드가 채워져있고, 1차 유효성을 통과
                         ? () {
-                            setState(() {
+                            setState(() async{
+                              await loginrepo.checkNick(nicknameController.text);
                               returnAlert(nicknameController.text); // 결과창
                             });
                           }

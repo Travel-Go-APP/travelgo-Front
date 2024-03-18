@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/route_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,12 +15,13 @@ import 'package:travel_go/style.dart';
 import 'package:xtyle/xtyle.dart';
 
 void main() async {
+  await dotenv.load(fileName: 'assets/env/.env');
   WidgetsFlutterBinding.ensureInitialized(); // 위젯 바인딩
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark); // 상태바 색상
   await Hive.initFlutter(); // 데이터베이스 초기화
   await Hive.openBox<int>('steps'); // 데이터베이스 로딩
-  KakaoSdk.init(nativeAppKey: '2e3648104cc8e6f4710f9280358233fe'); // 카카오 초기화
-  await NaverMapSdk.instance.initialize(clientId: '4rzwr9r8o0'); // 네이버맵 초기화
+  KakaoSdk.init(nativeAppKey: dotenv.env['KAKAO_NATIVEAPPKEY']); // 카카오 초기화
+  await NaverMapSdk.instance.initialize(clientId: dotenv.env['NAVERMAP_CLIENTID']); // 네이버맵 초기화
   Xtyle.init(
       configuration: XtyleConfig(mapper: {
     XtyleRegExp.korean: 'GmarketSans', // 한글 폰트

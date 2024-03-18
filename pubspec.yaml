@@ -52,6 +52,8 @@ dependencies:
   package_info_plus: ^5.0.1
   countries_world_map: ^1.1.1
   animated_flip_counter: ^0.2.6
+  flutter_dotenv: '5.1.0'
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +89,7 @@ flutter:
     - assets/images/gift3.png
 
     - assets/images/Dokdo.png
+    - assets/env/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
